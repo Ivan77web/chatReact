@@ -6,6 +6,9 @@ import { useCollectionData } from 'react-firebase-hooks/firestore';
 import Loader from "./UI/loader/Loader";
 import firebase from 'firebase/compat/app';
 import OurUsers from "./OurUsers";
+import cl from "./styles/Chat.module.css"
+import AllMessages from "./AllMessages";
+import InputBlock from "./InputBlock";
 
 export default function Chat(){
     const {auth, firestore} = useContext(Context);
@@ -34,7 +37,6 @@ export default function Chat(){
         firestore.collection(inputChat).orderBy('createdAt')
     )
 
-
     const sendMessage = async () => {
         firestore.collection(inputChat).add({
             uid: user.uid,
@@ -52,59 +54,33 @@ export default function Chat(){
         )
     }
 
-    if(chatIdOne == null || chatIdTwo == null){
-        return(
-            <div>
-                <OurUsers setChatIdOne={setChatIdOne} setChatIdTwo={setChatIdTwo}/>
-                <h1>
-                    Выберите собеседника...
-                </h1>
-            </div>
-        )
-    }
-
     return(
-        <Container>
-            {/* <TestChatId setChatId={setChatId}/> */}
-            <OurUsers setChatIdOne={setChatIdOne} setChatIdTwo={setChatIdTwo}/>
-            <Grid 
-                container
-                justify={"center"}            
-                style={{height: window.innerHeight - 50, marginTop: "20px"}}
-            >
-                <div className="allMessages">
-                    {messages.map( message =>
-                        <div className="oneMessage" style={{marginLeft: user.uid === message.uid ? "auto" : '0'}}>
-                            <Grid container style={{width: "fit-content", marginLeft: user.uid === message.uid ? "auto" : '0'}}>
-                                <Avatar className="oneMessageAvatar" src={message.url} />
-                                <div style={{marginTop: 10}}>{message.displayName}</div>
-                            </Grid>
+        <div className={cl.chat}>
+            <div className={cl.ourUsers}>
+                <OurUsers setChatIdOne={setChatIdOne} setChatIdTwo={setChatIdTwo}/>
+            </div>
 
-                            <div className="oneMessageText" style={{background: user.uid === message.uid ? "rgb(149, 241, 149)" : "white"}}> 
-                                {message.text}
-                            </div>
-                        </div>
-                    )}
+            <div className={cl.chatBlock} id="chatBlock">
+                <div className={cl.allMessages}>
+                    <AllMessages
+                        chatIdOne = {chatIdOne}
+                        chatIdTwo = {chatIdTwo}
+                        messages = {messages}
+                        user = {user}
+                    />
                 </div>
 
-                <Grid
-                        container
-                        style={{width: '100%', display: 'flex', marginTop: "10px", height: '56px'}}
-                    >
-                        <TextField 
-                            variant={"outlined"} 
-                            style={{width: "80%"}} 
-                            value = {value}
-                            onChange = {(e) => setValue(e.target.value)}
-                        />
-                        <Button
-                            style={{width: "15%", marginLeft: "5%", border: "1px solid gray"}}
-                            onClick={sendMessage}
-                        >
-                            Отправить
-                        </Button>
-                </Grid>
-            </Grid>
-        </Container>
+                <div className={cl.input}>
+                    <InputBlock
+                        value = {value}
+                        setValue = {setValue}
+                        sendMessage = {sendMessage}
+                        chatIdOne = {chatIdOne}
+                        chatIdTwo = {chatIdTwo}
+                    />
+                </div>
+
+            </div>
+        </div>
     )
 }

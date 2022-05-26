@@ -4,6 +4,10 @@ import React, { useContext, useEffect, useState } from "react";
 import { Context } from "..";
 import firebase from 'firebase/compat/app';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
+import cl from "./styles/Login.module.css"
+import MyButton from "./UI/myButton/MyButton";
+
+// ПОЧИНИТЬ!!!
 
 
 export default function Login(){
@@ -16,7 +20,6 @@ export default function Login(){
     const login = async () => {
         const provider = new firebase.auth.GoogleAuthProvider();
         const {user} = await auth.signInWithPopup(provider);
-
         addUsers(user);
     }
 
@@ -34,6 +37,7 @@ export default function Login(){
             firestore.collection('users').add({
                 id: user.uid,
                 name: user.displayName,
+                photo: user.photoURL
             })
         }
     }

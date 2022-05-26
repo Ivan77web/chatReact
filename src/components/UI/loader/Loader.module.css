@@ -5,6 +5,7 @@
     width: 100px;
     height: 100px;
     border-radius: 50%;
+    background:transparent;
 }
 
 .loader::before,
@@ -27,7 +28,7 @@
 .loader:after{
     width: 85%;
     height: 85%;
-    background-color: #ffffff;
+    background-color: transparent;  /* color white */
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);

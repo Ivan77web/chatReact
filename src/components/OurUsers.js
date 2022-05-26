@@ -2,45 +2,42 @@ import React, { useContext, useEffect, useState } from "react";
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 import { Context } from "..";
 import { useAuthState } from 'react-firebase-hooks/auth';
+import cl from "./styles/OurUsers.module.css"
+import OneUserInTable from "./OneUserInTable";
 
 export default function OurUsers({setChatIdOne, setChatIdTwo}){
-
     const {auth, firestore} = useContext(Context);
     const [user] = useAuthState(auth);
     const [loading, setLoading] = useState(true);
+    const [windowOpen, setWindowOpen] = useState(true)
     const [chats] = useCollectionData(
         firestore.collection('chats')
-    )
-    
+    )  
 
     const allUsers = useCollectionData(
         firestore.collection('users')
     )
 
-    const clickCompanion = (e) => {
-        if(e.target.classList.contains("userId")){  // РЕШИТЬ ЭТУ ПРОБЛЕМУ !!!!!!!!!!!
-            const elem = e.target
-            setChatIdOne(`chatID-${auth._delegate.lastNotifiedUid}-${elem.innerHTML}`);
-            setChatIdTwo(`chatID-${elem.innerHTML}-${auth._delegate.lastNotifiedUid}`);
-            sendChat(e.target)
-        }
+    const clickCompanion = (id) => {
+        setChatIdOne(`chatID-${auth._delegate.lastNotifiedUid}-${id}`);
+        setChatIdTwo(`chatID-${id}-${auth._delegate.lastNotifiedUid}`);
+        sendChat(id)
     }
 
-    const sendChat = async (elem) => {
-
+    const sendChat = async (id) => {
         let flag = true;
 
         for(let i = 0; i < chats.length; i++){
-            if(chats[i].text == `chatID-${auth._delegate.lastNotifiedUid}-${elem.innerHTML}`){
+            if(chats[i].text == `chatID-${auth._delegate.lastNotifiedUid}-${id}`){
                 flag = false;
-            }else if(chats[i].text == `chatID-${elem.innerHTML}-${auth._delegate.lastNotifiedUid}`){
+            }else if(chats[i].text == `chatID-${id}-${auth._delegate.lastNotifiedUid}`){
                 flag = false;
             }
         }
 
         if(flag){
             firestore.collection('chats').add({
-                text: `chatID-${auth._delegate.lastNotifiedUid}-${elem.innerHTML}`,
+                text: `chatID-${auth._delegate.lastNotifiedUid}-${id}`,
             })
         }
     }
@@ -51,25 +48,39 @@ export default function OurUsers({setChatIdOne, setChatIdTwo}){
         }
     }, [allUsers])
 
+    const resize = () => {
+        let window;
+
+        if(document.querySelector(`.${cl.ourUsersOpen}`)){
+            window = document.querySelector(`.${cl.ourUsersOpen}`);
+            setWindowOpen(false);
+        } else if (document.querySelector(`.${cl.ourUsersClose}`)){
+            window = document.querySelector(`.${cl.ourUsersClose}`);
+            setWindowOpen(true);
+        }
+
+        window.classList.toggle(`${cl.ourUsersClose}`);
+        window.classList.toggle(`${cl.ourUsersOpen}`);
+    }
+
+    useEffect(()=>{
+        console.log(windowOpen);
+    }, [windowOpen])
+
     if(!loading){
-        return(
-            <div style={{position: "fixed", border: "2px solid black", marginLeft: "200px", width: "500px", background: "white", color: "black"}}>
+        return(    
+            <div className={cl.ourUsersOpen}>
+
+                {windowOpen ? <h3 className={cl.intro}>Ваши собеседники</h3> : <div/>}
+
                 {allUsers[0].map( (user) => {
                     return(
-                        <div className="oneUser" key = {user.id} onClick={(e) => clickCompanion(e)} style={{display: "flex"}}>
-                            <div className="userName">
-                                {user.name}
-                            </div> 
-                            
-                            -
-
-                            <div className="userId">
-                                {user.id}
-                            </div>
-                        </div>
+                        <OneUserInTable key = {user.id} clickCompanion={clickCompanion} user={user} windowOpen={windowOpen}/>
                     )
                 })}
-            </div>       
+
+                <div onClick={()=> resize()} className={cl.pointer}/>
+            </div>  
         )
     }
 }

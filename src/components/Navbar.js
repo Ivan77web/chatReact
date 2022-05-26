@@ -1,11 +1,10 @@
-import React, { useContext, useEffect, useState } from "react";
-import AppBar from "@mui/material/AppBar"
-import Toolbar from "@mui/material/Toolbar"
-import { Button, Grid } from "@mui/material";
+import React, { useContext} from "react";
 import { Link } from "react-router-dom";
 import { LOGIN_ROUTE } from "../utils/consts";
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { Context } from "..";
+import cl from "./styles/Navbar.module.css";
+import MyButton from "./UI/myButton/MyButton";
 
 export default function Navbar(){
 
@@ -13,21 +12,23 @@ export default function Navbar(){
     const [user] = useAuthState(auth)
 
     return(
-        <AppBar color="secondary" position="static">
-            <Toolbar variant="dense">
-                <Grid container justify="flex-end">
-                    {user ?
-                        <div style={{display: "flex"}}>
-                            <Button onClick={ () => auth.signOut() } variant="outlined">Выйти</Button>
-                        </div>
+        <div className={cl.navbar}>
+            {user ?
+                <div className={cl.button}>
+                    <MyButton onClick={ () => auth.signOut() } name="Выйти"/>
+                </div>
                         
-                        :
-                        <Link to={LOGIN_ROUTE}>
-                            <Button variant="outlined">Логин</Button>
-                        </Link>
-                    }
-                </Grid>
-            </Toolbar>
-        </AppBar>
+            :
+
+                // На данный момент эта кнопка ничего не делает!!!
+
+                <Link to={LOGIN_ROUTE}> 
+                    <div className={cl.button}>
+                        <MyButton name="Логин"/> 
+                    </div>
+                </Link>  
+            }
+        </div>
+
     )
 }

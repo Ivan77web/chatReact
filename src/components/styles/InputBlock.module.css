@@ -1,0 +1,19 @@
+.inputBlock{
+    width: 100%;
+    display: flex;
+    margin-top: 10px; 
+    height: 56px;
+    margin-bottom: 10px;
+}
+
+.input{
+    margin-left: 10px;
+    width: 100%;
+}
+
+.button{
+    width: 15%; 
+    margin-Left: 5%; 
+    border: 1px solid gray;
+    margin-right: 10px;
+}

@@ -1,0 +1,19 @@
+.chat{
+    display: flex;
+    margin-top: 100px;
+}
+
+.chatBlock{
+    width: 100%;
+    margin-left: 50px;
+    margin-right: 50px;
+    height: 600px; 
+    border: 2px solid teal; 
+    border-radius: 5px;
+    overflow-y: auto;
+    background: rgb(202, 223, 231);
+}
+
+.allMessages{
+    min-height: 520px;
+}

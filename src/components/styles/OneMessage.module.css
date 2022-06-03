@@ -1,0 +1,33 @@
+.avatarAndName{
+    width: fit-content;
+    display: flex;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.oneMessageAvatar{
+    margin: 10px;
+}
+
+.userName{
+    height: 60px;
+    line-height: 60px;
+}
+
+.oneMyMessageText{
+    width: 80%;
+    margin: 0 70px 10px auto;
+    padding: 10px 20px;
+    border: 1px solid teal;
+    border-radius: 20px;
+    background: rgb(149, 241, 149);
+}
+
+.oneUsersMessageText{
+    width: 80%;
+    margin: 0 0 10px 70px;
+    padding: 10px 20px;
+    border: 1px solid teal;
+    border-radius: 20px;
+    background: white;
+}

@@ -7,8 +7,7 @@ import Loader from "./UI/loader/Loader";
 import firebase from 'firebase/compat/app';
 import OurUsers from "./OurUsers";
 import cl from "./styles/Chat.module.css"
-import AllMessages from "./AllMessages";
-import InputBlock from "./InputBlock";
+import ChatBlock from "./ChatBlock";
 
 export default function Chat(){
     const {auth, firestore} = useContext(Context);
@@ -38,14 +37,16 @@ export default function Chat(){
     )
 
     const sendMessage = async () => {
-        firestore.collection(inputChat).add({
-            uid: user.uid,
-            displayName: user.displayName,
-            photoURL: user.photoURL,
-            text: value,
-            createdAt: firebase.firestore.FieldValue.serverTimestamp()
-        })
-        setValue('');
+        if(value != ""){
+            firestore.collection(inputChat).add({
+                uid: user.uid,
+                displayName: user.displayName,
+                photoURL: user.photoURL,
+                text: value,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            })
+            setValue('');
+        }
     }
 
     if(loading){
@@ -56,30 +57,21 @@ export default function Chat(){
 
     return(
         <div className={cl.chat}>
+
             <div className={cl.ourUsers}>
                 <OurUsers setChatIdOne={setChatIdOne} setChatIdTwo={setChatIdTwo}/>
             </div>
 
-            <div className={cl.chatBlock} id="chatBlock">
-                <div className={cl.allMessages}>
-                    <AllMessages
-                        chatIdOne = {chatIdOne}
-                        chatIdTwo = {chatIdTwo}
-                        messages = {messages}
-                        user = {user}
-                    />
-                </div>
-
-                <div className={cl.input}>
-                    <InputBlock
-                        value = {value}
-                        setValue = {setValue}
-                        sendMessage = {sendMessage}
-                        chatIdOne = {chatIdOne}
-                        chatIdTwo = {chatIdTwo}
-                    />
-                </div>
-
+            <div className={cl.chatBlock}>
+                <ChatBlock 
+                    chatIdOne = {chatIdOne}
+                    chatIdTwo = {chatIdTwo}
+                    messages = {messages}
+                    user = {user} 
+                    value = {value}
+                    setValue = {setValue}
+                    sendMessage = {sendMessage}
+                />
             </div>
         </div>
     )

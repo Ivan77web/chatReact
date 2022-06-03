@@ -1,3 +1,23 @@
 .login{
-    
+    margin: 200px auto 0;
+    width: 500px;
+    max-width: 95%;
+    border: 3px solid rgb(152, 164, 204);
+    border-radius: 5px;
+    background: rgb(213, 231, 238);
+}
+
+.login p{
+    font-family: 'Nunito', sans-serif;
+    font-size: 20px;
+    margin: 30px;
+    margin-top: 40px;
+    text-align: center;
+}
+
+.button{
+    width: 239px;
+    max-width: 95%;
+    height: 38px;
+    margin: 80px auto 50px;
 }

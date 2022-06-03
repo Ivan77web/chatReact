@@ -13,3 +13,37 @@
     top: 50%;
     transform: translate(0, -50%) 
 }
+
+.iconUser{
+    margin-left: 10px;
+    display: flex;
+    width: 300px;
+    height: 42px;
+    border-radius: 20px;
+    line-height: 42px;
+    background: rgb(240, 240, 240);
+    margin-top: 4px;
+}
+
+.userAvatar{
+    margin-top: 1px;
+}
+
+.userName{
+    margin-left: 10px;
+}
+
+@media screen and (max-width: 550px) {
+    .button{
+        right: 10px;
+    }
+
+    .iconUser{
+        width: 42px;
+    }
+
+    .userName{
+        display: none;
+    }
+}
+

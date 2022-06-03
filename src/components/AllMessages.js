@@ -1,16 +1,19 @@
-import React, { useContext } from "react";
-import { Context } from "..";
-import { useAuthState } from 'react-firebase-hooks/auth';
+import React, {useEffect, useState} from "react";
 import cl from "./styles/AllMessages.module.css"
-import { Avatar } from "@mui/material";
-import { useCollectionData } from 'react-firebase-hooks/firestore';
-import firebase from 'firebase/compat/app';
+import OneMessage from "./OneMessage";
 
+export default function AllMessages({chatIdOne, chatIdTwo, messages, user}){
+    const classes = (chatIdOne == null && chatIdTwo == null) ? cl.allMessages + " " + cl.notScroll : cl.allMessages;
 
+    useEffect(()=>{
+        if(chatIdOne != null && chatIdTwo != null){
+            const allMessages = document.querySelector(`.${cl.allMessages}`)
+            allMessages.scrollTo(0,allMessages.scrollHeight)
+        }
+    },[messages])
 
-export default function OneMessage({chatIdOne, chatIdTwo, messages, user}){
     return(
-        <div>
+        <div className={classes}>
             {
                 (chatIdOne == null && chatIdTwo == null) 
                 ?
@@ -18,14 +21,10 @@ export default function OneMessage({chatIdOne, chatIdTwo, messages, user}){
                 : 
                 messages.map( message =>
                     <div className={cl.oneMessage} style={{marginLeft: user.uid === message.uid ? "auto" : '0'}}>
-                        <div className={cl.avatarAndName} style={{marginLeft: user.uid === message.uid ? "auto" : '0'}}>
-                            <Avatar className={cl.oneMessageAvatar} src={message.photoURL} />
-                            <div className={cl.userName}>{message.displayName}</div>
-                        </div>
-    
-                        <div className={cl.oneMessageText} style={{background: user.uid === message.uid ? "rgb(149, 241, 149)" : "white", marginLeft: user.uid === message.uid ? 'auto' : '70px'}}> 
-                            {message.text}
-                        </div>
+                        <OneMessage
+                            message = {message}
+                            user = {user}
+                        />
                     </div>
                 )   
             }

@@ -3,44 +3,30 @@ import { useCollectionData } from 'react-firebase-hooks/firestore';
 import { Context } from "..";
 import { useAuthState } from 'react-firebase-hooks/auth';
 import cl from "./styles/OurUsers.module.css"
-import OneUserInTable from "./OneUserInTable";
+import {Transition} from "react-transition-group";
+import './styles/OurUsersAnimation.css'
+import MyInput from "./UI/MyInput/MyInput";
+import SearchUsers from "./SearchUsers";
 
 export default function OurUsers({setChatIdOne, setChatIdTwo}){
     const {auth, firestore} = useContext(Context);
     const [user] = useAuthState(auth);
     const [loading, setLoading] = useState(true);
     const [windowOpen, setWindowOpen] = useState(true)
-    const [chats] = useCollectionData(
-        firestore.collection('chats')
-    )  
-
+    const [valueSearch, setValueSearch] = useState("");
+    const [resultSearch, setResultSearch] = useState();
     const allUsers = useCollectionData(
         firestore.collection('users')
     )
 
-    const clickCompanion = (id) => {
-        setChatIdOne(`chatID-${auth._delegate.lastNotifiedUid}-${id}`);
-        setChatIdTwo(`chatID-${id}-${auth._delegate.lastNotifiedUid}`);
-        sendChat(id)
-    }
-
-    const sendChat = async (id) => {
-        let flag = true;
-
-        for(let i = 0; i < chats.length; i++){
-            if(chats[i].text == `chatID-${auth._delegate.lastNotifiedUid}-${id}`){
-                flag = false;
-            }else if(chats[i].text == `chatID-${id}-${auth._delegate.lastNotifiedUid}`){
-                flag = false;
-            }
+    useEffect(()=>{
+        if(allUsers[0] != undefined){
+            setResultSearch(allUsers[0].filter(oneUser => 
+                (oneUser.name.toLowerCase().includes(valueSearch.toLowerCase()))
+                || 
+                (oneUser.name == user.displayName && ("избранное").includes(valueSearch.toLowerCase()))))
         }
-
-        if(flag){
-            firestore.collection('chats').add({
-                text: `chatID-${auth._delegate.lastNotifiedUid}-${id}`,
-            })
-        }
-    }
+    },[allUsers, valueSearch])
 
     useEffect(()=>{
         if(allUsers[0]){
@@ -49,38 +35,46 @@ export default function OurUsers({setChatIdOne, setChatIdTwo}){
     }, [allUsers])
 
     const resize = () => {
-        let window;
-
-        if(document.querySelector(`.${cl.ourUsersOpen}`)){
-            window = document.querySelector(`.${cl.ourUsersOpen}`);
-            setWindowOpen(false);
-        } else if (document.querySelector(`.${cl.ourUsersClose}`)){
-            window = document.querySelector(`.${cl.ourUsersClose}`);
-            setWindowOpen(true);
-        }
-
-        window.classList.toggle(`${cl.ourUsersClose}`);
-        window.classList.toggle(`${cl.ourUsersOpen}`);
+        setWindowOpen(!windowOpen);
     }
 
-    useEffect(()=>{
-        console.log(windowOpen);
-    }, [windowOpen])
-
     if(!loading){
-        return(    
-            <div className={cl.ourUsersOpen}>
+        return( 
+            <Transition
+                in = {windowOpen}
+                timeout = {1000}
+            >
+                {
+                    state => 
+                        <div className={cl.ourUsers + " " + state}>
+                            {
+                                (windowOpen)
+                                ?
+                                <div className={cl.input}>
+                                    <MyInput
+                                        value = {valueSearch}
+                                        onChange = {(e) => setValueSearch(e.target.value)}
+                                        height = "30px"
+                                        placeholder = "Поиск собеседника"
+                                    />
+                                </div>
+                                :
+                                <div/>
+                            }
 
-                {windowOpen ? <h3 className={cl.intro}>Ваши собеседники</h3> : <div/>}
+                            <SearchUsers
+                                user = {user}
+                                windowOpen={windowOpen}
+                                setChatIdOne = {setChatIdOne}
+                                setChatIdTwo = {setChatIdTwo}
+                                allUsers = {allUsers}
+                                resultSearch = {resultSearch}
+                            />
 
-                {allUsers[0].map( (user) => {
-                    return(
-                        <OneUserInTable key = {user.id} clickCompanion={clickCompanion} user={user} windowOpen={windowOpen}/>
-                    )
-                })}
-
-                <div onClick={()=> resize()} className={cl.pointer}/>
-            </div>  
+                            <div onClick={()=> resize()} className={cl.pointer}/>
+                        </div>  
+                }
+            </Transition> 
         )
     }
 }

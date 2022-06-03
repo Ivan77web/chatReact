@@ -1,3 +1,16 @@
+.allMessages{
+    height: 520px;
+    overflow-y: auto;
+}
+
+.allMessages::-webkit-scrollbar {
+    width: 0;
+}
+
+.notScroll{
+    overflow: hidden;
+}
+
 .helpText{
     font-size: 20px;
     text-align: center;
@@ -6,29 +19,4 @@
 
 .oneMessage{
     width: fit-content;
-}
-
-.oneMessageAvatar{
-    margin: 10px;
-}
-
-.oneMessageText{
-    margin-bottom: 10px;
-    padding: 10px 20px;
-    width: fit-content;
-    border: 1px solid teal;
-    border-radius: 20px;
-
-}
-
-.avatarAndName{
-    width: fit-content;
-    display: flex;
-    padding-left: 15px;
-    padding-right: 15px;
-}
-
-.userName{
-    height: 60px;
-    line-height: 60px;
 }

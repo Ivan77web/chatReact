@@ -1,6 +1,5 @@
 .oneUser{
     display: flex;
-    width: 90%;
     height: 50px;
     margin-top: 10px;
     margin-bottom: 10px;
@@ -26,4 +25,48 @@
 
 .oneUser:hover{
     background: rgb(206, 203, 203);
+}
+
+.nameAndId.entering{
+    display: none;
+}
+
+.nameAndId.entered{
+
+}
+
+.nameAndId.exiting{
+    display: none;
+}
+
+.nameAndId.exited{
+    display: none;
+}
+
+@media screen and (max-width: 1000px) {
+    .oneUser{
+        height: 80px;
+        min-height: 80px;
+        min-width: 150px;
+        width: 150px;
+        margin-top: 0;
+        margin-left: 5px;
+        margin-right: 5px;
+        background: rgb(218, 218, 218);
+    }
+
+    .oneUserAvatar{
+        margin-top: 20px;
+        margin-right: 5px;
+    }
+
+    .userId{
+        display: none;
+    }
+
+    .userName{
+        font-size: 16px;
+        margin: 0;
+        margin-top: 20px;
+    }
 }

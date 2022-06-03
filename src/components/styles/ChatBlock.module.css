@@ -1,0 +1,20 @@
+.chatBlock{
+    width: 98%;
+    margin-left: 50px;
+    margin-right: 50px;
+    height: 600px; 
+    border: 2px solid teal; 
+    border-radius: 5px;
+    background: rgb(202, 223, 231);
+}
+
+.allMessages{
+    min-height: 520px;
+}
+
+@media screen and (max-width: 1000px) {
+    .chatBlock{
+        width: 100%;
+        margin: 0;
+    }
+}

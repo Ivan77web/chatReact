@@ -1,17 +1,13 @@
+import React, {useContext} from "react";
 import { Container } from "@mui/material";
 import { Button, Grid, Box } from "@mui/material";
-import React, { useContext, useEffect, useState } from "react";
 import { Context } from "..";
 import firebase from 'firebase/compat/app';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 import cl from "./styles/Login.module.css"
 import MyButton from "./UI/myButton/MyButton";
 
-// ПОЧИНИТЬ!!!
-
-
 export default function Login(){
-
     const {auth, firestore} = useContext(Context);
     const allUsers = useCollectionData(
         firestore.collection('users')
@@ -22,7 +18,6 @@ export default function Login(){
         const {user} = await auth.signInWithPopup(provider);
         addUsers(user);
     }
-
 
     const addUsers = async (user) => {
         let flag = 1;
@@ -43,24 +38,14 @@ export default function Login(){
     }
 
     return(
-        <Container>
-            <Grid   
-                container 
-                style={{height: window.innerHeight - 50}} 
-                alignItems={"center"} 
-                justifyContent={"center"}
-            >
-                <Grid
-                    style={{width: 400, background: "lightgray"}}
-                    container
-                    alignItems="center"
-                    direction="column"
-                >
-                    <Box p={5}>
-                        <Button onClick={login} variant="outlined">Войти с помощью Google</Button>
-                    </Box>
-                </Grid>
-            </Grid>
-        </Container>
+        <div className={cl.login}>
+            <p>
+                Для продолжения требуется авторизация. <br/>Это не займет много времени.
+            </p>
+
+            <div className={cl.button}>
+                <MyButton onClick={login} name="Войти с помощью Google"/>
+            </div>
+        </div>
     )
 }

@@ -1,0 +1,17 @@
+.usersInTable{
+    overflow-y: auto;
+    height: 550px;
+}
+
+.usersInTable::-webkit-scrollbar {
+    width: 0;
+}
+
+@media screen and (max-width: 1000px) {
+    .usersInTable{
+        display: flex;
+        height: 100px;
+        overflow-y: hidden;
+        overflow-x: auto;
+    } 
+}

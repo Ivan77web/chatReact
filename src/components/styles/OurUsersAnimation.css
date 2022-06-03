@@ -1,0 +1,77 @@
+@keyframes close {
+    from{
+        left: 0;
+        width: 400px;
+    }
+
+    10%{
+        left: 0;
+        width: 410px;
+    }
+
+    70%{
+        width: 0;
+        left: -20px;
+    }
+
+    to{
+        left: 0;
+        width: 68px;
+    }
+}
+
+@keyframes open {
+    from{
+        left: 0;
+        width: 68px;
+    }
+
+    10%{
+        width: 80px;
+    }
+
+
+    30%{
+        width: 0;
+        left: -20px;
+    }
+
+    to{
+        left: 0;
+        width: 400px;
+    }
+}
+
+/* .entering{
+    animation: open 1s forwards;
+}
+
+.entered{
+    animation: open 1s forwards;
+}
+
+.exiting{
+    animation: close 1s forwards;
+}
+
+.exited{
+    animation: close 1s forwards;
+} */
+
+@media screen and (min-width: 1000px) {
+    .entering{
+        animation: open 1s forwards;
+    }
+    
+    .entered{
+        animation: open 1s forwards;
+    }
+    
+    .exiting{
+        animation: close 1s forwards;
+    }
+    
+    .exited{
+        animation: close 1s forwards;
+    }
+}
